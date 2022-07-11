@@ -13,7 +13,7 @@ commands:
           when: on_fail
           command: |
             echo "Destroying environments << parameters.workflow-id >>"
-            aws s3 rm s3://udapeople-<< parameters.workflow-id >> --recursive
+            aws s3 rm s3://udapeople-frontend-<< parameters.workflow-id >> --recursive
             aws cloudformation delete-stack --stack-name stack-create-server-<< parameters.workflow-id >>
             aws cloudformation delete-stack --stack-name stack-create-bucket-<< parameters.workflow-id >>
 
@@ -152,7 +152,7 @@ jobs:
               --template-file .circleci/files/backend.yml \
               --tags Project=udapeople \
               --stack-name stack-create-server-${CIRCLE_WORKFLOW_ID:0:7} \
-              --parameter-overrides ID="backend-${CIRCLE_WORKFLOW_ID:0:7}"
+              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
       - run:
           name: Ensure front-end infrastructure exist
           command: |
@@ -171,7 +171,7 @@ jobs:
       - persist_to_workspace:
           root: ~/
           paths:
-            - project/.circleci/ansible/inventory.txt
+            - project/.circleci/*
       - destroy-environment:
           workflow-id: "${CIRCLE_WORKFLOW_ID:0:7}"     
 
@@ -188,10 +188,14 @@ jobs:
           name: Install dependencies
           command: |
             apk add --update ansible
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            ./aws/install
+            which aws
       - run:
           name: Configure server
           command: |
-            ansible-playbook -i project/.circleci/ansible/inventory.txt project/.circleci/ansible/deploy-backend.yml
+            ansible-playbook -i project/.circleci/ansible/inventory.txt project/.circleci/ansible/configure-server.yml
       - destroy-environment:
           workflow-id: "${CIRCLE_WORKFLOW_ID:0:7}"      
 
@@ -255,11 +259,14 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            # your code here
+            apk add --update ansible
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            ./aws/install
       - run:
           name: Deploy backend
           command: |
-            # your code here
+            ansible-playbook -i project/.circleci/ansible/inventory.txt project/.circleci/ansible/deploy-server.yml
       - destroy-environment:
           workflow-id: "${CIRCLE_WORKFLOW_ID:0:7}" 
 
