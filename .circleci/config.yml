@@ -204,6 +204,16 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
+      - restore_cache:
+          keys: [backend-build]
+      - attach_workspace:
+          at: ~/project/backend
+      - run:
+          name: Install dependencies
+          command: |
+            apk add --update tar python3-pip
+            pip --version
+            pip install awscli
       - run:
           name: Run migrations
           command: |
