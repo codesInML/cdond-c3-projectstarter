@@ -211,6 +211,7 @@ jobs:
           command: |
             ls -a
             cd backend
+            npm i
             npm run premigrations
             npm run migrations
       - run:
