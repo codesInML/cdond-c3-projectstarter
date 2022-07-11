@@ -201,19 +201,29 @@ jobs:
 
   run-migrations:
     docker:
-      - image: circleci/node:13.8.0
+      - image: sleavely/node-awscli:14.x
     steps:
       - checkout
       - restore_cache:
           keys: [backend-build]
       - attach_workspace:
           at: ~/project/backend
-      - run:
-          name: Install dependencies
-          command: |
-            apk add --update tar python3-pip
-            pip --version
-            pip install awscli
+      # - run:
+      #     name: Install dependencies
+      #     command: |
+      #       apt-get update
+      #       apt-get install -y \
+      #           python3 \
+      #           python3-pip \
+      #           python3-setuptools \
+      #           groff \
+      #           less
+      #       pip3 install --upgrade pip
+      #       apt-get clean
+      # - run:
+      #     name: Install awscli
+      #     command: |
+            # pip3 --no-cache-dir install --upgrade awscli
       - run:
           name: Run migrations
           command: |
