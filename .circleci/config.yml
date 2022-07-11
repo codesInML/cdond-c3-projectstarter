@@ -189,7 +189,6 @@ jobs:
           name: Install dependencies
           command: |
             apk add --update ansible
-            # apk add --update curl nodejs npm
             pip install awscli
             which aws
       - run:
@@ -209,22 +208,6 @@ jobs:
           keys: [backend-build]
       - attach_workspace:
           at: ~/project/backend
-      # - run:
-      #     name: Install dependencies
-      #     command: |
-      #       apt-get update
-      #       apt-get install -y \
-      #           python3 \
-      #           python3-pip \
-      #           python3-setuptools \
-      #           groff \
-      #           less
-      #       pip3 install --upgrade pip
-      #       apt-get clean
-      # - run:
-      #     name: Install awscli
-      #     command: |
-            # pip3 --no-cache-dir install --upgrade awscli
       - run:
           name: Run migrations
           command: |
