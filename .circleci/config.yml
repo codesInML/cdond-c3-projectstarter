@@ -51,9 +51,7 @@ jobs:
       - run:
           name: Build front-end
           command: |
-            ls
             cd frontend
-            ls
             npm i
             npm run build
       - save_cache:
@@ -70,9 +68,7 @@ jobs:
       - run:
           name: Back-end build
           command: |
-            ls
             cd backend
-            ls
             npm i
             npm run build
       - save_cache:
@@ -163,7 +159,6 @@ jobs:
       - run:
           name: Add back-end ip to ansible inventory
           command: |
-            ls -a
             aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --filters Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7} \
@@ -190,11 +185,9 @@ jobs:
           command: |
             apk add --update ansible
             pip install awscli
-            which aws
       - run:
           name: Configure server
           command: |
-            ls
             ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/configure-server.yml
       - destroy-environment:
           workflow-id: "${CIRCLE_WORKFLOW_ID:0:7}"      
@@ -267,7 +260,6 @@ jobs:
       - run:
           name: Deploy backend
           command: |
-            ls -a
             ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/deploy-server.yml
       - destroy-environment:
           workflow-id: "${CIRCLE_WORKFLOW_ID:0:7}" 
