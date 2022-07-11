@@ -187,11 +187,8 @@ jobs:
           name: Install dependencies
           command: |
             apk add --update ansible
-            yum install -y curl
-            curl --version
-            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-            unzip awscliv2.zip
-            ./aws/install
+            # apk add --update curl nodejs npm
+            pip install awscli
             which aws
       - run:
           name: Configure server
@@ -260,11 +257,7 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            yum install curl
-            curl --version
-            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-            unzip awscliv2.zip
-            ./aws/install
+            pip install awscli
       - run:
           name: Deploy backend
           command: |
