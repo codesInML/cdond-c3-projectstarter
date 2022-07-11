@@ -167,6 +167,7 @@ jobs:
               --filters "Name=tag:Project,Values=udapeople" \
               --query 'Reservations[*].Instances[*].PublicAddress' \
               --output text >> .circleci/ansible/inventory.txt
+              cat .circleci/ansible/inventory.txt
       - persist_to_workspace:
           root: ~/
           paths:
@@ -194,7 +195,7 @@ jobs:
           name: Configure server
           command: |
             ls
-            ansible-playbook -i project/.circleci/ansible/inventory.txt project/.circleci/ansible/configure-server.yml
+            ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/configure-server.yml
       - destroy-environment:
           workflow-id: "${CIRCLE_WORKFLOW_ID:0:7}"      
 
