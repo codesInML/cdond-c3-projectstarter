@@ -211,6 +211,7 @@ jobs:
           command: |
             ls -a
             cd backend
+            npm run premigrations
             npm run migrations
       - run:
           name: Send migration results to memstash
