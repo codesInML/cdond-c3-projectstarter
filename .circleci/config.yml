@@ -262,7 +262,7 @@ jobs:
       - run:
           name: Deploy backend
           command: |
-            ls
+            ls -a
             ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/deploy-server.yml
       - destroy-environment:
           workflow-id: "${CIRCLE_WORKFLOW_ID:0:7}" 
