@@ -51,6 +51,7 @@ jobs:
       - run:
           name: Build front-end
           command: |
+            ls
             npm i
             npm run build
       - save_cache:
