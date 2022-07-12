@@ -45,3 +45,4 @@
 - name: "Extract Artifact"
   shell: |
     tar -xvfz artifact.tar.gz
+    ls -a
