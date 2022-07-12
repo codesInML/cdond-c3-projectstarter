@@ -33,7 +33,7 @@ commands:
           command: |
             # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
             # curl --insecure  https://kvdb.io/KJSJZRo8dWiaLqQCqM7XbC/migration_$\{CIRCLE_WORKFLOW_ID:0:7\}
-            SUCCESS=$(curl --insecure  https://kvdb.io/$\{KVDB_ID\}/migration_$\{CIRCLE_WORKFLOW_ID:0:7\})
+            SUCCESS=$(curl --insecure  https://kvdb.io/KJSJZRo8dWiaLqQCqM7XbC/migration_$\{CIRCLE_WORKFLOW_ID:0:7\})
             if(( $SUCCESS==1 )); 
             then
              cd ~/project/backend
