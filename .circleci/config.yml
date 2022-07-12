@@ -225,10 +225,8 @@ jobs:
       - image: python:3.7-alpine3.16
     steps:
       - checkout
-      - restore_cache:
-          keys: [frontend-build]
       - attach_workspace:
-          at: ~/project/frontend
+          at: ~/
       - run:
           name: Install dependencies
           command: |
@@ -247,10 +245,18 @@ jobs:
       - run:
           name: Deploy frontend objects
           command: |
+            echo "List objects in the directory ----------------------------------"
+            ls -a
+            echo "Change the directory to frontend -------------------------------"
             cd frontend
+            echo "Install the dependencies ---------------------------------------"
             npm i
+            echo "Build and list objects in directory ----------------------------"
             npm run build
+            ls -a
+            echo "Compress the build ---------------------------------------------"
             tar -czvf artifact.tar.gz dist
+            echo "Copy to s3 -----------------------------------------------------"
             aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
       - revert-migrations:
           workflow-id: "${CIRCLE_WORKFLOW_ID:0:7}"
@@ -284,7 +290,7 @@ jobs:
             cd .circleci/ansible
             echo "Contents  of the inventory.txt file is -------"
             cat inventory.txt
-            ansible-playbook -i inventory.txt deploy-backend.yml
+            ansible-playbook -i inventory.txt deploy-backend.yml -v
       - persist_to_workspace:
           root: ~/
           paths:
