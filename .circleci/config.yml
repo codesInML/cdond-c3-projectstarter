@@ -255,6 +255,7 @@ jobs:
             echo "Compress the build ---------------------------------------------"
             tar -czvf artifact.tar.gz dist
             echo "Copy to s3 -----------------------------------------------------"
+            aws s3api list-buckets --query "Buckets[].Name"
             aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7}/ --recursive
       - revert-migrations:
           workflow-id: "${CIRCLE_WORKFLOW_ID:0:7}"
