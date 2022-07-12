@@ -19,8 +19,7 @@
   shell: |
     cd ~/backend/dist
     ls -a
-    pm2 stop default
-    pm2 start --no-daemon main.js
+    pm2 start main.js
   register: execute_node
 
 - name: "Print Message"
