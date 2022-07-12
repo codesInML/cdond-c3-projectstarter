@@ -32,14 +32,12 @@ commands:
           when: on_fail
           command: |
             # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
-            # curl --insecure  https://kvdb.io/KJSJZRo8dWiaLqQCqM7XbC/migration_$\{CIRCLE_WORKFLOW_ID:0:7\}
-            SUCCESS=$(curl --insecure  https://kvdb.io/KJSJZRo8dWiaLqQCqM7XbC/migration_$\{CIRCLE_WORKFLOW_ID:0:7\})
+            SUCCESS=$(curl --insecure  "https://kvdb.io/KJSJZRo8dWiaLqQCqM7XbC/migration_${CIRCLE_WORKFLOW_ID:0:7}")
             if(( $SUCCESS==1 )); 
             then
              cd ~/project/backend
              npm install
              npm run migrations:revert
-              exit 1
             fi
             
 jobs:
@@ -214,7 +212,7 @@ jobs:
           name: Send migration results to KVDB
           command: |
             echo "${KVDB_ID}"
-            curl https://kvdb.io/KJSJZRo8dWiaLqQCqM7XbC/migration_$\{CIRCLE_WORKFLOW_ID:0:7\}  -d '1'
+            curl "https://kvdb.io/KJSJZRo8dWiaLqQCqM7XbC/migration_${CIRCLE_WORKFLOW_ID:0:7}"  -d '1'
       - revert-migrations:
           workflow-id: "${CIRCLE_WORKFLOW_ID:0:7}"
       - destroy-environment:
@@ -228,7 +226,7 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            apk add --update ansible tar curl node npm
+            apk add --update ansible tar curl nodejs npm
             pip install awscli
       - run:
           name: Get backend url
@@ -262,7 +260,7 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            apk add --update ansible tar curl node npm
+            apk add --update ansible tar curl nodejs npm
             pip install awscli
       - run:
           name: Deploy backend
