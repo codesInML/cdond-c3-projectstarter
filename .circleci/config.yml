@@ -23,8 +23,6 @@ commands:
       workflow-id:
         type: string    
     steps:
-      - restore_cache:
-          keys: [backend-build]
       - attach_workspace:
           at: ~/project/backend
       - run:
@@ -35,9 +33,10 @@ commands:
             SUCCESS=$(curl --insecure  "https://kvdb.io/KJSJZRo8dWiaLqQCqM7XbC/migration_${CIRCLE_WORKFLOW_ID:0:7}")
             if [ "$SUCCESS"=="1" ]; 
             then
-             cd ~/project/backend
-             npm install
-             npm run migrations:revert
+              ls -la
+              cd ~/project/backend
+              npm install
+              npm run migrations:revert
             fi
             
 jobs:
@@ -256,7 +255,7 @@ jobs:
             echo "Compress the build ---------------------------------------------"
             tar -czvf artifact.tar.gz dist
             echo "Copy to s3 -----------------------------------------------------"
-            aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
+            aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7}/ --recursive
       - revert-migrations:
           workflow-id: "${CIRCLE_WORKFLOW_ID:0:7}"
       - destroy-environment:
