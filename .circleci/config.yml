@@ -203,10 +203,11 @@ jobs:
           keys: [backend-build]
       - attach_workspace:
           at: ~/project/backend
-      - run:
-          name: Install Dependencies
-          command: |
-            apk add --update curl tar
+      # - run:
+      #     name: Install Dependencies
+      #     command: |
+      #       apk add --update curl tar
+      #       apk --no-cache add curl
       - run:
           name: Run migrations
           command: |
@@ -234,7 +235,6 @@ jobs:
           command: |
             apt-get update -y
             apt-get install -y rsync
-            apk add --update curl tar
       - run:
           name: Get backend url
           command: |
