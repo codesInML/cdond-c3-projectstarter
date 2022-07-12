@@ -168,6 +168,8 @@ jobs:
           root: ~/
           paths:
             - project/.circleci/*
+            - project/frontend/*
+            - project/backend/*
       - destroy-environment:
           workflow-id: "${CIRCLE_WORKFLOW_ID:0:7}"     
 
