@@ -239,11 +239,13 @@ jobs:
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --filters Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7} \
               --output text)
-            echo 'export API_URL="http://${BACKEND_IP}:3030"' >> $BASH_ENV
+            echo 'export API_URL="http://$(echo BACKEND_IP):3030"' >> $BASH_ENV
             cat $BASH_ENV
       - run:
           name: Deploy frontend objects
           command: |
+            echo "Confirm API_URL exists -----------------------------------------"
+            cat $BASH_ENV
             echo "List objects in the directory ----------------------------------"
             ls -a
             echo "Change the directory to frontend -------------------------------"
