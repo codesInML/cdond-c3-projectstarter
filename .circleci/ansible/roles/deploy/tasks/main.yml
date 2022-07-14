@@ -6,7 +6,7 @@
 
 - name: "Unarchive backend folder"
   unarchive:
-    src: /root/project/artifact.tar.gz
+    src: artifact.tar.gz
     dest: ~/backend
 
 - name: "Install backend dependencies"
