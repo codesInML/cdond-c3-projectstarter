@@ -44,7 +44,7 @@ commands:
     steps:
       - slack/notify:
           event: fail
-          channel: ci-cd_pipeline
+          channel: ci-cd-pipeline
           template: basic_fail_1
 
   install_awscli:
@@ -291,6 +291,7 @@ jobs:
           name: Deploy frontend objects
           command: |
             cd frontend
+            npm i
             npm run build
             # tar -czvf artifact.tar.gz dist
             aws s3 cp dist s3://udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}/ --recursive
@@ -448,7 +449,7 @@ jobs:
     steps:
       - slack/notify:
           event: pass
-          channel: ci-cd_pipeline
+          channel: ci-cd-pipeline
           template: success_target_deployment_1
 
 workflows:
