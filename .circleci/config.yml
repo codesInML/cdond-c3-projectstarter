@@ -44,7 +44,7 @@ commands:
     steps:
       - slack/notify:
           event: fail
-          channel: cicd_pipeline
+          channel: ci-cd_pipeline
           template: basic_fail_1
 
   install_awscli:
@@ -255,8 +255,11 @@ jobs:
       - run:
           name: Send migration results to KVDB
           command: |
-            cat migrations.txt
-            curl "https://kvdb.io/KJSJZRo8dWiaLqQCqM7XbC/migration_${CIRCLE_WORKFLOW_ID:0:7}"  -d '1'
+            cat ~/project/backend/migrations.txt
+            if grep -q "has been executed successfully." ~/project/backend/migrations.txt
+            then
+              curl "https://kvdb.io/KJSJZRo8dWiaLqQCqM7XbC/migration_${CIRCLE_WORKFLOW_ID:0:7}"  -d '1'
+            fi
       - revert-migrations:
           workflow-id: "${CIRCLE_WORKFLOW_ID:0:7}"
       - destroy-environment:
@@ -445,7 +448,7 @@ jobs:
     steps:
       - slack/notify:
           event: pass
-          channel: cicd_pipeline
+          channel: ci-cd_pipeline
           template: success_target_deployment_1
 
 workflows:
