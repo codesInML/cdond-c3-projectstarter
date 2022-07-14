@@ -37,7 +37,8 @@ commands:
               ls -la
               cd ~/project/backend
               npm install
-              npm run migrations:revert
+              npm run migrations:revert > migrations.txt
+              cat ~/project/backend/migrations.txt
             fi
   
   job_failure_notifier:
