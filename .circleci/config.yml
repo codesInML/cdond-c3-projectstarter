@@ -19,6 +19,10 @@ commands:
             aws s3 rm s3://udapeople-frontend-<< parameters.workflow-id >> --recursive
             aws cloudformation delete-stack --stack-name stack-create-server-<< parameters.workflow-id >>
             aws cloudformation delete-stack --stack-name stack-create-bucket-<< parameters.workflow-id >>
+            aws cloudformation deploy \
+                --template-file .circleci/files/cloudfront.yml \
+                --stack-name InitialStack \
+                --parameter-overrides WorkflowID="kk1j287"
 
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
@@ -443,6 +447,7 @@ jobs:
           command: |
             if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
             then
+              aws s3api list-buckets --query "Buckets[].Name"
               aws s3 rm "s3://udapeople-${OldWorkflowID}" --recursive
               aws cloudformation delete-stack --stack-name "stack-create-server-${OldWorkflowID}"
               aws cloudformation delete-stack --stack-name "stack-create-bucket-${OldWorkflowID}"
