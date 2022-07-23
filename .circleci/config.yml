@@ -401,7 +401,7 @@ jobs:
             apk add --update curl
             pip install awscli
       - run:
-          name: save old workflow ID to kvdb.io
+          name: save old workflow ID to kvdb.io 
           command: |
             export OLD_WORKFLOW_ID=$(aws cloudformation \
                 list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
