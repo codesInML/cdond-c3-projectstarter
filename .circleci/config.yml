@@ -286,6 +286,8 @@ jobs:
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --filters Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7} \
               --output text)
+            export API_URL="http://${BACKEND_IP}:3030"
+            echo "API_URL = ${API_URL}"
             echo "API_URL=http://${BACKEND_IP}:3030" >> frontend/.env
             cat frontend/.env
       - run:
@@ -294,7 +296,7 @@ jobs:
             cd frontend
             npm i
             npm run build
-            # tar -czvf artifact.tar.gz dist
+            tar -czvf artifact.tar.gz dist
             aws s3 cp dist s3://udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}/ --recursive
       - revert-migrations:
           workflow-id: "${CIRCLE_WORKFLOW_ID:0:7}"
@@ -358,7 +360,7 @@ jobs:
           name: Frontend smoke test.
           command: |
             URL="http://udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}.s3-website-us-east-1.amazonaws.com/#/employees"
-            if curl -s ${URL} | grep "Hello World"
+            if curl -s ${URL} | grep "Welcome"
             then
               echo ${URL}
               return 0
@@ -368,12 +370,20 @@ jobs:
       - run:
           name: Backend smoke test.
           command: |
-           BACKEND_IP=$(aws ec2 describe-instances \
-              --query 'Reservations[*].Instances[*].PublicIpAddress' \
-              --filters Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7} \
-              --output text)
-           echo "${BACKEND_IP}"  
-           curl "http://${BACKEND_IP}:3030/api/status"
+            BACKEND_IP=$(aws ec2 describe-instances \
+                --query 'Reservations[*].Instances[*].PublicIpAddress' \
+                --filters Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7} \
+                --output text)
+            echo "${BACKEND_IP}"  
+            # Fetch and prepare the BACKEND_IP env var
+            export API_URL="http://${BACKEND_IP}:3030"
+            echo "${API_URL}"
+            if curl "${API_URL}/api/status" | grep "ok"
+            then
+                return 0
+            else
+                return 1
+            fi
       - destroy-environment:
           workflow-id: "${CIRCLE_WORKFLOW_ID:0:7}"
       - revert-migrations:
