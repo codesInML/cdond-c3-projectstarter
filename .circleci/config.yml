@@ -176,7 +176,6 @@ jobs:
             cd backend
             npm i
             npm audit fix --audit-level=critical --force
-            npm audit fix --audit-level=critical --force
             npm audit --audit-level=critical
       - job_failure_notifier
 
