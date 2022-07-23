@@ -449,6 +449,7 @@ jobs:
               aws cloudformation delete-stack --stack-name "stack-create-server-${OldWorkflowID}"
               aws cloudformation delete-stack --stack-name "stack-create-bucket-${OldWorkflowID}"
             fi
+            
       - destroy-environment:
           workflow-id: "${CIRCLE_WORKFLOW_ID:0:7}"
       - revert-migrations:
