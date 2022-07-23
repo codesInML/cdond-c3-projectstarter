@@ -176,12 +176,13 @@ jobs:
             cd backend
             npm i
             npm audit fix --audit-level=critical --force
+            npm audit fix --audit-level=critical --force
             npm audit --audit-level=critical
       - job_failure_notifier
 
   deploy-infrastructure:
     docker:
-      - image: amazon/aws-cli
+      - image: python:3.7-alpine3.16
     steps:
       - checkout
       - run: yum install -y tar gzip
