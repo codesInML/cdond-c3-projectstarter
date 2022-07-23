@@ -420,6 +420,7 @@ jobs:
           workflow-id: "${CIRCLE_WORKFLOW_ID:0:7}"
       - revert-migrations:
           workflow-id: "${CIRCLE_WORKFLOW_ID:0:7}"
+      - job_failure_notifier
 
   cleanup:
     docker:
@@ -449,6 +450,7 @@ jobs:
           workflow-id: "${CIRCLE_WORKFLOW_ID:0:7}"
       - revert-migrations:
           workflow-id: "${CIRCLE_WORKFLOW_ID:0:7}"
+      - job_failure_notifier
 
   job_success_notifier:
     docker:
