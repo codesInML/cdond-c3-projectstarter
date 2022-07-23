@@ -423,20 +423,17 @@ jobs:
 
   cleanup:
     docker:
-      - image: python:3.7-alpine
+      - image: cimg/base:stable
     steps:
       - checkout
-      - run:
-          name: Install dependencies
-          command: |
-            apk add --update curl bash
-            pip install awscli
+      - install_awscli
+      - install_nodejs
       - run:
           name: Get old stack workflow id
           command: |
-            export STACKS=$(aws cloudformation list-stacks \
-              --query "StackSummaries[*].StackName" \
-              --stack-status-filter CREATE_COMPLETE --no-paginate --output text) 
+            export STACKS=($(aws cloudformation list-stacks \
+                --query "StackSummaries[*].StackName" \
+                --stack-status-filter CREATE_COMPLETE --no-paginate --output text))
             echo Stack names: "${STACKS[@]}"
             export OldWorkflowID=$(curl --insecure https://kvdb.io/KJSJZRo8dWiaLqQCqM7XbC/old_workflow_id) 
       - run:
