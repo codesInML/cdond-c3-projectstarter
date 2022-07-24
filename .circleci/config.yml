@@ -57,7 +57,7 @@ commands:
       - slack/notify:
           event: pass
           channel: ci-cd-pipeline
-          template: success_target_deployment_1
+          template: success_tagged_deploy_1
 
   install_awscli:
     description: Install AWS CLI v2
