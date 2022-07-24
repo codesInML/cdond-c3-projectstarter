@@ -51,6 +51,13 @@ commands:
           event: fail
           channel: ci-cd-pipeline
           template: basic_fail_1
+  
+  job_success_notifier:
+    steps:
+      - slack/notify:
+          event: pass
+          channel: ci-cd-pipeline
+          template: success_target_deployment_1
 
   install_awscli:
     description: Install AWS CLI v2
@@ -298,6 +305,7 @@ jobs:
           name: Deploy frontend objects
           command: |
             cd frontend
+            ls -a
             cat .env
             echo "Printed out .env file ---------------------------"
             npm i
@@ -368,7 +376,7 @@ jobs:
             if curl -s ${URL} | grep "Welcome"
             then
               echo ${URL}
-              return 0
+              return 1
             else
               return 1
             fi
@@ -456,15 +464,7 @@ jobs:
       - revert-migrations:
           workflow-id: "${CIRCLE_WORKFLOW_ID:0:7}"
       - job_failure_notifier
-
-  job_success_notifier:
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - slack/notify:
-          event: pass
-          channel: ci-cd-pipeline
-          template: success_target_deployment_1
+      - job_success_notifier
 
 workflows:
   default:
@@ -498,5 +498,3 @@ workflows:
           requires: [smoke-test]
       - cleanup:
           requires: [cloudfront-update]
-      - job_success_notifier:
-          requires: [cleanup]
