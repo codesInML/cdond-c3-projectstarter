@@ -235,7 +235,6 @@ jobs:
 
       - install_awscli
       - install_ansible
-      - install_nodejs
       - add_ssh_keys:
           fingerprints: ["32:fd:1d:b2:91:34:3b:30:fa:39:2c:9a:df:ca:91:d6"]
       - attach_workspace:
@@ -243,7 +242,9 @@ jobs:
       - run: 
           name: Configure server
           command: |
-            ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/configure-server.yml
+            cd .circleci/ansible
+            cat inventory.txt
+            ansible-playbook -i inventory.txt configure-server.yml
       - destroy-environment:
           workflow-id: "${CIRCLE_WORKFLOW_ID:0:7}"  
       - job_failure_notifier    
