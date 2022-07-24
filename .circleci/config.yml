@@ -240,7 +240,7 @@ jobs:
           fingerprints: ["32:fd:1d:b2:91:34:3b:30:fa:39:2c:9a:df:ca:91:d6"]
       - attach_workspace:
           at: ~/
-      - run:
+      - run: 
           name: Configure server
           command: |
             ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/configure-server.yml
