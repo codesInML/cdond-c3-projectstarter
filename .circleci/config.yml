@@ -247,7 +247,7 @@ jobs:
             ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i inventory.txt configure-server.yml
       - destroy-environment:
           workflow-id: "${CIRCLE_WORKFLOW_ID:0:7}"  
-  #     - job_failure_notifier
+      - job_failure_notifier
   
   # configure-infrastructure:
   #   docker:
