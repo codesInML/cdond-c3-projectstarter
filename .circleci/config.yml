@@ -22,7 +22,7 @@ commands:
             aws cloudformation deploy \
                 --template-file .circleci/files/cloudfront.yml \
                 --stack-name InitialStack \
-                --parameter-overrides WorkflowID="kk1j287"
+                --parameter-overrides WorkflowID="jj1j287"
 
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
@@ -249,27 +249,27 @@ jobs:
   #         workflow-id: "${CIRCLE_WORKFLOW_ID:0:7}"  
   #     - job_failure_notifier
   
-    configure-infrastructure:
-      docker:
-        - image: python:3.7-alpine3.16
-      steps:
-        - checkout
-        - add_ssh_keys:
-            fingerprints: ["32:fd:1d:b2:91:34:3b:30:fa:39:2c:9a:df:ca:91:d6"]
-        - attach_workspace:
-            at: ~/
-        - run:
-            name: Install dependencies
-            command: |
-              apk add --update ansible
-              pip install awscli
-        - run:
-            name: Configure server
-            command: |
-              ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/configure-server.yml
-        - destroy-environment:
-            workflow-id: "${CIRCLE_WORKFLOW_ID:0:7}"  
-        - job_failure_notifier
+  configure-infrastructure:
+    docker:
+      - image: python:3.7-alpine3.16
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints: ["32:fd:1d:b2:91:34:3b:30:fa:39:2c:9a:df:ca:91:d6"]
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Install dependencies
+          command: |
+            apk add --update ansible
+            pip install awscli
+      - run:
+          name: Configure server
+          command: |
+            ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/configure-server.yml
+      - destroy-environment:
+          workflow-id: "${CIRCLE_WORKFLOW_ID:0:7}"  
+      - job_failure_notifier
 
   run-migrations:
     docker:
