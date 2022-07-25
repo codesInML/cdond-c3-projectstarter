@@ -1,0 +1,24 @@
+groups:
+- name: Down
+  rules:
+  - alert: InstanceDown
+    expr: up == 0
+    for: 1m
+    annotations:
+      title: 'Instance {{ $labels.instance }} down'
+      description: '{{ $labels.instance }} of job {{ $labels.job }} has been down for 1 minute'
+    labels:
+      severity: 'critical'
+
+global:
+  resolve_timeout: 1m
+  slack_api_url: 'https://hooks.slack.com/services/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'
+
+route:
+  receiver: 'slack-notifications'
+
+receivers:
+- name: 'slack-notifications'
+  slack_configs:
+  - channel: '#ci-cd-pipeline'
+    send_resolved: true
