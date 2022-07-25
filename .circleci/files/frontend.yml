@@ -18,6 +18,10 @@ Resources:
               - '*'
             AllowedMethods:
               - GET
+              - POST
+              - PUT
+              - DELETE
+              - PATCH
               - HEAD
             AllowedOrigins:
               - '*'
