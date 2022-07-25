@@ -21,7 +21,6 @@ Resources:
               - POST
               - PUT
               - DELETE
-              - PATCH
               - HEAD
             AllowedOrigins:
               - '*'
